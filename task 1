@@ -1,5 +1,3 @@
-
-# t1.py
 # Movie Genre Classification using TF-IDF + Naive Bayes
 
 import pandas as pd
@@ -10,9 +8,8 @@ from sklearn.metrics import accuracy_score
 
 TRAIN_FILE = "train_data.txt"
 
-# -------------------------------
-# LOAD & CLEAN DATA
-# -------------------------------
+# LOADING & CLEANING OF DATA
+
 def load_data(file_path):
     genres = []
     plots = []
@@ -31,9 +28,7 @@ df = load_data(TRAIN_FILE)
 
 print("Number of unique genres:", df["genre"].nunique())
 
-# -------------------------------
-# TRAIN–VALIDATION SPLIT
-# -------------------------------
+# TRAIN_TEST_SPLIT
 X_train, X_val, y_train, y_val = train_test_split(
     df["plot"],
     df["genre"],
@@ -42,9 +37,7 @@ X_train, X_val, y_train, y_val = train_test_split(
     stratify=df["genre"]
 )
 
-# -------------------------------
 # TF-IDF
-# -------------------------------
 vectorizer = TfidfVectorizer(
     stop_words="english",
     max_features=10000
@@ -53,16 +46,13 @@ vectorizer = TfidfVectorizer(
 X_train_vec = vectorizer.fit_transform(X_train)
 X_val_vec = vectorizer.transform(X_val)
 
-# -------------------------------
 # MODEL
-# -------------------------------
 model = MultinomialNB()
 model.fit(X_train_vec, y_train)
 
-# -------------------------------
 # EVALUATION
-# -------------------------------
 y_pred = model.predict(X_val_vec)
 accuracy = accuracy_score(y_val, y_pred)
 
 print("Validation Accuracy:", accuracy)
+
