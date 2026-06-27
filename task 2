@@ -15,24 +15,24 @@ sns.set_style("whitegrid")
 plt.rcParams['figure.figsize'] = (12, 6)
 
 print("="*70)
-print("🚀 CREDIT CARD FRAUD DETECTION - MACHINE LEARNING PROJECT")
+print("CREDIT CARD FRAUD DETECTION - MACHINE LEARNING PROJECT")
 print("="*70 + "\n")
 
-print("📊 STEP 1: LOADING AND EXPLORING DATA")
+print("STEP 1: LOADING AND EXPLORING DATA")
 print("-" * 70)
 print("Loading dataset...")
 df = pd.read_csv('fraudTest.csv')
 
-print(f"✓ Dataset loaded successfully!")
+print(f"Dataset loaded successfully!")
 print(f"  • Total transactions: {len(df):,}")
 print(f"  • Total features: {len(df.columns)}\n")
 
 print("Checking data quality:")
 missing_values = df.isnull().sum()
 if missing_values.sum() == 0:
-    print("✓ No missing values found!\n")
+    print("No missing values found!\n")
 else:
-    print(f"⚠ Missing values:\n{missing_values[missing_values > 0]}\n")
+    print(f"Missing values:\n{missing_values[missing_values > 0]}\n")
 
 print("Fraud Distribution:")
 fraud_counts = df['is_fraud'].value_counts()
@@ -40,7 +40,7 @@ print(f"  • Legitimate: {fraud_counts[0]:,} ({fraud_counts[0]/len(df)*100:.1f}
 print(f"  • Fraudulent:  {fraud_counts[1]:,} ({fraud_counts[1]/len(df)*100:.1f}%)")
 print(f"  • Fraud Rate:  {df['is_fraud'].mean()*100:.2f}%\n")
 
-print("⚙️  STEP 2: FEATURE ENGINEERING")
+print("STEP 2: FEATURE ENGINEERING")
 print("-" * 70)
 print("Creating features from transaction datetime...")
 
@@ -49,7 +49,7 @@ df['hour'] = df['trans_date_trans_time'].dt.hour
 df['day_of_week'] = df['trans_date_trans_time'].dt.dayofweek
 df['month'] = df['trans_date_trans_time'].dt.month
 
-print("✓ New features created:")
+print("New features created:")
 print("  • hour: Hour of day (0-23)")
 print("  • day_of_week: Day of week (0=Monday, 6=Sunday)")
 print("  • month: Month of year (1-12)\n")
@@ -61,14 +61,14 @@ print(f"Features used for prediction: {features}\n")
 X = df[features]
 y = df['is_fraud']
 
-print("🔧 STEP 3: PREPARING DATA FOR TRAINING")
+print("STEP 3: PREPARING DATA FOR TRAINING")
 print("-" * 70)
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.3, random_state=42, stratify=y
 )
 
-print(f"✓ Data split completed:")
+print(f"Data split completed:")
 print(f"  • Training set: {len(X_train):,} samples (70%)")
 print(f"  • Test set:     {len(X_test):,} samples (30%)\n")
 
@@ -76,15 +76,15 @@ scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
-print("✓ Features scaled successfully!\n")
+print("Features scaled successfully!\n")
 
-print("🤖 STEP 4: TRAINING MACHINE LEARNING MODELS")
+print("STEP 4: TRAINING MACHINE LEARNING MODELS")
 print("-" * 70)
 print("Training 3 different algorithms...\n")
 
 results = {}
 
-print("1️⃣  LOGISTIC REGRESSION")
+print("1. LOGISTIC REGRESSION")
 lr = LogisticRegression(max_iter=1000, random_state=42)
 lr.fit(X_train_scaled, y_train)
 lr_pred = lr.predict(X_test_scaled)
@@ -97,10 +97,10 @@ results['Logistic Regression'] = {
     'accuracy': lr_accuracy, 'auc': lr_auc
 }
 
-print(f"   ✓ Accuracy: {lr_accuracy:.4f} ({lr_accuracy*100:.2f}%)")
-print(f"   ✓ ROC AUC:  {lr_auc:.4f}\n")
+print(f"   Accuracy: {lr_accuracy:.4f} ({lr_accuracy*100:.2f}%)")
+print(f"   ROC AUC:  {lr_auc:.4f}\n")
 
-print("2️⃣  DECISION TREE CLASSIFIER")
+print("2. DECISION TREE CLASSIFIER")
 dt = DecisionTreeClassifier(max_depth=10, random_state=42)
 dt.fit(X_train_scaled, y_train)
 dt_pred = dt.predict(X_test_scaled)
@@ -113,10 +113,10 @@ results['Decision Tree'] = {
     'accuracy': dt_accuracy, 'auc': dt_auc
 }
 
-print(f"   ✓ Accuracy: {dt_accuracy:.4f} ({dt_accuracy*100:.2f}%)")
-print(f"   ✓ ROC AUC:  {dt_auc:.4f}\n")
+print(f"   Accuracy: {dt_accuracy:.4f} ({dt_accuracy*100:.2f}%)")
+print(f"   ROC AUC:  {dt_auc:.4f}\n")
 
-print("3️⃣  RANDOM FOREST CLASSIFIER")
+print("3. RANDOM FOREST CLASSIFIER")
 rf = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42, n_jobs=-1)
 rf.fit(X_train_scaled, y_train)
 rf_pred = rf.predict(X_test_scaled)
@@ -129,10 +129,10 @@ results['Random Forest'] = {
     'accuracy': rf_accuracy, 'auc': rf_auc
 }
 
-print(f"   ✓ Accuracy: {rf_accuracy:.4f} ({rf_accuracy*100:.2f}%)")
-print(f"   ✓ ROC AUC:  {rf_auc:.4f}\n")
+print(f"   Accuracy: {rf_accuracy:.4f} ({rf_accuracy*100:.2f}%)")
+print(f"   ROC AUC:  {rf_auc:.4f}\n")
 
-print("📈 STEP 5: MODEL COMPARISON")
+print("STEP 5: MODEL COMPARISON")
 print("-" * 70)
 
 comparison_df = pd.DataFrame({
@@ -143,10 +143,10 @@ comparison_df = pd.DataFrame({
 print(comparison_df.to_string(index=False))
 
 best_model_name = comparison_df.loc[comparison_df['Accuracy'].idxmax(), 'Model']
-print(f"\n🏆 Best Model: {best_model_name}")
+print(f"\nBest Model: {best_model_name}")
 print(f"   Accuracy: {results[best_model_name]['accuracy']:.4f}\n")
 
-print("🔍 STEP 6: DETAILED ANALYSIS")
+print("STEP 6: DETAILED ANALYSIS")
 print("-" * 70)
 
 best_pred = results[best_model_name]['pred']
@@ -154,4 +154,3 @@ print(classification_report(y_test, best_pred, target_names=['Legitimate', 'Frau
 
 cm = confusion_matrix(y_test, best_pred)
 tn, fp, fn, tp = cm.ravel()
-
